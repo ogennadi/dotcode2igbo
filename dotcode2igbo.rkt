@@ -5,27 +5,40 @@
 
 (define dotcode-post '(
 
-
-
            ("\\.e" "ẹ̀")
+           ("\\.E" "Ẹ̀")
            ("\\.i" "ị̀")
+           ("\\.I" "Ị̀")
            ("\\.o" "ọ̀")
+           ("\\.O" "Ọ̀")
            ("\\.u" "ụ̀")
+           ("\\.U" "Ụ̀")
            ("\\.n" "ṅ̀")
-           
+           ("\\.N" "Ṅ̀")
+
            ("/.e" "ẹ́")
+           ("/.E" "Ẹ́")
            ("/.i" "ị́")
+           ("/.I" "Ị́")
            ("/.o" "ọ́")
+           ("/.O" "Ọ́")
            ("/.u" "ụ́")
+           ("/.U" "Ụ́")
            ("/.n" "ṅ́")
+           ("/.N" "Ṅ́")
            ("/+" "ǝ́")
 
            ("-.e" "ẹ̄")
+           ("-.E" "Ẹ̄")
            ("-.i" "ị̄")
+           ("-.I" "Ị̄")
            ("-.o" "ọ̄")
+           ("-.O" "Ọ̄")
            ("-.u" "ụ̄")
+           ("-.U" "Ụ̄")
            ("-.n" "ṅ̄")
-           
+           ("-.N" "Ṅ̄")
+
            (".." ".")
            ("==" "=")
            ("++" "+")
@@ -34,63 +47,66 @@
 
            ("/+" "ǝ́")
            ("/a" "á")
+           ("/A" "Á")
            ("/e" "é")
+           ("/E" "É")
            ("/i" "í")
+           ("/I" "Í")
            ("/m" "ḿ")
+           ("/M" "Ḿ")
            ("/n" "ń")
+           ("/N" "Ń")
            ("/o" "ó")
+           ("/O" "Ó")
            ("/u" "ú")
+           ("/U" "Ú")
 
            ("\\+" "ǝ̀")
            ("\\a" "à")
+           ("\\A" "À")
            ("\\e" "è")
+           ("\\E" "È")
            ("\\i" "ì")
+           ("\\I" "Ì")
            ("\\o" "ò")
+           ("\\O" "Ò")
            ("\\u" "ù")
+           ("\\U" "Ù")
            ("\\m" "m̀")
+           ("\\M" "M̀")
            ("\\n" "ǹ")
+           ("\\N" "Ǹ")
 
            ("-+" "ǝ̄")
            ("-a" "ā")
+           ("-A" "Ā")
            ("-e" "ē")
+           ("-E" "Ē")
            ("-i" "ī")
+           ("-I" "Ī")
            ("-m" "m̄")
+           ("-M" "M̄")
            ("-n" "n̄")
+           ("-N" "N̄")
            ("-o" "ō")
+           ("-O" "Ō")
            ("-u" "ū")
-           
-           (".e" "ẹ")
-           (".i" "ị")
-           (".o" "ọ")
-           (".u" "ụ")
-           (".n" "ṅ")
-           ("=n" "₦")
-           
-           ("+" "ǝ")))
+           ("-U" "Ū")
 
-;;
-;(define (->unicode2 string)
-;  (foldl proc
-;         string
-;         table))
-;
-;(define (proc replacement-pair string)
-;  (regexp-replace* (regexp-quote (car replacement-pair))
-;                   string
-;                   (cadr replacement-pair)
-;  ))
-;
-;;;
-;(define (->unicode1 string)
-;  (regexp-replace token-regexp string replace))
-;
-;(define token-regexp
-;  (string-join (map (compose regexp-quote car) table) "|"))
-;
-;(define (replace string) (if string
-;                             (cadr (assoc string table) )
-;                             ""))
-;
+           (".e" "ẹ")
+           (".E" "Ẹ")
+           (".i" "ị")
+           (".I" "Ị")
+           (".o" "ọ")
+           (".O" "Ọ")
+           (".u" "ụ")
+           (".U" "Ụ")
+           (".n" "ṅ")
+           (".N" "Ṅ")
+           ("=n" "₦")
+           ("=N" "₦")
+
+           ("+" "ǝ")))
 
 ;;
 (define (->unicode3 string table)
@@ -117,10 +133,22 @@
 
 (define ->unicode ->unicode3)
 
+;; Returns the first characters in strings, a and b that are
+;; not equal
+(define (sdiff a b)
+  (for ([i a]
+        [j b]
+        [index (in-naturals)])
+    (if (not (char=? i j))
+        (printf "~a: ~a ~a~n" index i j)
+        '())))
+
+;; Convert a string in dotcode to one in Orba Unicode
 (define (orba string)
   (->unicode string dotcode-post))
 
-;(orba (read-string 100))
+;; For when you wanna paste in multiple lines of dotcode
+(define (multiline-orba) (displayln (orba (read-string 10000))))
 
 ;; Main
 (displayln
@@ -132,13 +160,28 @@
 (check-equal? (->unicode "abcdefghijklmnopqrstuvwxyz.e.i.o.u.n+=n..==//\\--++" dotcode-post)
               "abcdefghijklmnopqrstuvwxyzẹịọụṅǝ₦.=/\\-+")
 
+(check-equal? (->unicode "ABCDEFGHIJKLMNOPQRSTUVWXYZ.E.I.O.U.N+=N..==//\\--++" dotcode-post)
+                         "ABCDEFGHIJKLMNOPQRSTUVWXYZẸỊỌỤṄǝ₦.=/\\-+")
+
+
 (check-equal? (->unicode "/abcd/efgh/ijkl/m/n/opqrst/uvwxyz/.e/.i/.o/.u/.n/+=n..=/\\--++" dotcode-post)
               "ábcdéfghíjklḿńópqrstúvwxyzẹ́ị́ọ́ụ́ṅ́ǝ́₦.=/\\-+")
+
+(check-equal? (->unicode "/ABCD/EFGH/IJKL/M/N/OPQRST/UVWXYZ/.E/.I/.O/.U/.N/+=N..=/\\--++" dotcode-post)
+              "ÁBCDÉFGHÍJKLḾŃÓPQRSTÚVWXYZẸ́Ị́Ọ́Ụ́Ṅ́ǝ́₦.=/\\-+")
+
 
 (check-equal? (->unicode "\\abcd\\efgh\\ijkl\\m\\n\\opqrst\\uvwxyz\\.e\\.i\\.o\\.u\\.n\\+=n..==//\\--++" dotcode-post)
                "àbcdèfghìjklm̀ǹòpqrstùvwxyzẹ̀ị̀ọ̀ụ̀ṅ̀ǝ̀₦.=/\\-+")
 
+(check-equal? (->unicode "\\ABCD\\EFGH\\IJKL\\M\\N\\OPQRST\\UVWXYZ\\.E\\.I\\.O\\.U\\.N\\+=n..==//\\--++" dotcode-post)
+              "ÀBCDÈFGHÌJKLM̀ǸÒPQRSTÙVWXYZẸ̀Ị̀Ọ̀Ụ̀Ṅ̀ǝ̀₦.=/\\-+")
+
+
 (check-equal? (->unicode "-abcd-efgh-ijkl-m-n-opqrst-uvwxyz-.e-.i-.o-.u-.n-+=n..==//\\--++" dotcode-post)
               "ābcdēfghījklm̄n̄ōpqrstūvwxyzẹ̄ị̄ọ̄ụ̄ṅ̄ǝ̄₦.=/\\-+")
+
+(check-equal? (->unicode "-ABCD-EFGH-IJKL-M-N-OPQRST-UVWXYZ-.E-.I-.O-.U-.N-+=N..==//\\--++" dotcode-post)
+              "ĀBCDĒFGHĪJKLM̄N̄ŌPQRSTŪVWXYZẸ̄Ị̄Ọ̄Ụ̄Ṅ̄ǝ̄₦.=/\\-+")
 ;(check-equal? (->unicode "aaeeiioouummnn.." dotcode-post)
  ;             "aaeeiioouummnṅ.")
