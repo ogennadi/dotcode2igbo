@@ -2,17 +2,13 @@ NAME
   dotcode2igbo - Orba dotcode to Igbo converter
 
 SYNOPSIS
-  dotcode2igbo [--clipboard] [STRING]...
+  dotcode2igbo [STRING]...
 
 DESCRIPTION
   Converts text written in Orba dotcode notation to Igbo text, and output the result to standard output
 
-  If ``--clipboard'' is in effect, the Igbo text is copied to the clipboard as well.
-
 BUILD
-  You need Racket 6.3 and Make.
-
-  In the source directory, type `make` to build the binary.
+  You need Racket 6.3.
 
 EXAMPLES
   dotcode2igbo "O nwere ihe di iche n'ime /.ekw\a n.e \.ekw/a."
